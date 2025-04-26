@@ -1,5 +1,45 @@
-# ais-dev2il-mlops-taxi-rides
+# AIS DEV2IL - MLOps - Taxi Ride Outlier Detection
 
+This is an example project used in the exercise course of the DEV2IL lecture. 
+It implements the batch predication high level ML system design and uses the *Train-Run* training system option.
+
+## Business Problem
+
+You work for a taxi ride company. They want to start making rides more consistent by understanding longer journeys in order to improve customer experience and thus increase customer retention. 
+
+### User Story: Detect unusual taxi rides
+
+As a member of the operations team of the taxi ride company, I want to see which taxi rides were unusual compared to the all taxi rides of the same day.
+
+Acceptance Criteria
+- The list of unusual taxi rides for a day is available on the next day in the morning
+
+## High Level System Architecture
+
+After some discussions with the developers of the taxi ride management software system, you agree on the following system integration architecture: 
+- A file containing information on all taxi rides is put to a shared location at latest at 02:00 AM on the next day
+- Unusual rides are written to a shared location at latest at 06:00 AM on the next day
+
+You additionally agree on the following interface
+- Data is exchanged in [Apache Parquet](https://parquet.apache.org/) format
+- Input files follow the pattern `yyyy-mm-dd.taxi-rides.parquet`
+- Output files follow are pattern `yyyy-mm-dd.taxi-rides.outliers.parquet`
+
+Input file structure
+- `tpep_pickup_datetime` ... Pickup time in UTC
+- `tpep_dropoff_datetime` ... Dropoff time in UTC
+- `trip_distance` ... Ride distance in miles
+
+Output file structure
+- `ride_id` ... The row index within the input file
+- `ride_dist` ... The distance of the ride in miles
+- `ride_time` ... The time of the ride in seconds
+
+![System Architecture](system-architecture.drawio.png)
+
+## Outlier Detector Architecture
+
+![Outlier Detector Architecture](outlier-detector-architecture.drawio.png)
 
 ## Setup
 
@@ -15,6 +55,8 @@ pip install .[dev]
 pip install .[test]
 ```
 
+Install the Visual Studio Code [Parquet Visualizer](https://marketplace.visualstudio.com/items/?itemName=lucien-martijn.parquet-visualizer) extension.
+
 ## Notebook environment
 
 Run `jupyter notebook` to work with the notebooks without IDE.
@@ -26,11 +68,17 @@ When using an IDE, make sure that the IDE is configured to use the project's vir
 Run `pytest`.
 In order to see logging and stdout outputs, use `pytest -s --log-cli-level=DEBUG`.
 
+## Running the outlier detector on your developer machine
+
+Run `detect-taxi-ride-outliers`. 
+
+Example data can be found in the [work](./work) folder. Run `detect-taxi-ride-outliers ./work 2025-01-15` to detect outliers for example data.
+
 ## Working with Docker on your developer machine
 
 To build the `taxi-rides-outlier-detection` image, run `sh build-image.sh`. 
 
-To find outliers from a file on your local file system run `sh run-container.sh`
+To find outliers from a file on your local file system run `sh run-container.sh`. Run `sh run-container.sh ./work 2025-01-15` to detect outliers for example data.
 
 ## Working With the GitHub Packages Container Registry
 
@@ -38,20 +86,35 @@ To find outliers from a file on your local file system run `sh run-container.sh`
 
 In order to authenticate, you need to create a personal access token and authenticate. Follow the steps as outlined here: https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic
 
-To build the `taxi-rides-outlier-detection` image, run `sh build-image-gitlab.sh`. 
+To build the `taxi-rides-outlier-detection` image, run `sh build-image-github.sh`. 
 
-To find outliers from a file on your local file system run `sh run-container-gitlab.sh`
+To find outliers from a file on your local file system run `sh run-container-gitlab.sh`. Run `sh run-container-gitlab.sh peterrietzler 1.0.1 ./work 2025-01-15` to detect outliers for example data.
+
 
 ### Using GitHub Actions
 
 See https://docs.github.com/en/actions/use-cases-and-examples/publishing-packages/publishing-docker-images#publishing-images-to-github-packages
 
+In order to allow your workflow to publish docker images, you need to connect the repository with the package. Make sure that you have created the package using the terminal, then 
+1. Open your profile: In the top right corner of GitHub, click your profile photo, then click Your profile.
+1. Open the *Packages* tab
+1. Select the `taxi-rides-outlier-detection` package
+1. Open *Package settings*
+1. Add your repository and select the *Write* role for it
 
-## xxx
 
+## Running the Kubernetes Cron Job
 
-https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page
-https://www.kaggle.com/datasets/elemento/nyc-yellow-taxi-trip-data
+1. Deploy the cron job by running `kubectl apply -f deploy/k8s/taxi-rides-outlier-detection-cronjob.yaml`
+
+Further useful commands
+- List cron jobs: `kubectl get cronjobs`
+- List cron jobs: `kubectl get jobs`
+- List pods: `kubectl get pods`
+- Follow logs of a pod: `kubectl logs -f POD_NAME`
+- Get more information for a pod (e.g. for problem analysis): `kubectl describe pod POD_NAME`
+- Delete a pod: `kubectl delete pod POD_NAME`
+- Delete a job or cron job: `kubectl delete -f deploy/k8s/local/taxi-rides-outlier-detection-cronjob.yaml`
 
 
 Parquet
@@ -77,6 +140,7 @@ Visual Studio Code: Parquet Visualizer
 1. Create the Dockerfile, build it and run it on the local system
 1. Copy the GitHub Workflow and let it build remotely
 1. Run the Dockerfile using the remote image
+1. Run the job and the cron job
 
 
 ? static code analysis - take over from Johannes ? 

@@ -9,7 +9,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-def detect_outliers(taxi_rides_data: pd.DataFrame) -> pd.DataFrame:
+def detect_outliers(taxi_rides_data: pd.DataFrame) -> (pd.DataFrame, dict):
     raw_data = taxi_rides_data
 
     data = pd.DataFrame()
@@ -20,14 +20,14 @@ def detect_outliers(taxi_rides_data: pd.DataFrame) -> pd.DataFrame:
     data['date'] = raw_data['tpep_pickup_datetime'].dt.date
     data['ride_id'] = raw_data.index
 
-
     X = data[['ride_dist', 'ride_time']]
     results = _cluster_and_label(X, create_and_show_plot=False)
     data['label'] = results['labels']
 
     outliers = data[data['label'] == -1]
-    _logger.info('Found %d outliers' % len(outliers))
-    return outliers.drop(columns=['label'])
+    _logger.debug('Found %d outliers' % len(outliers))
+    del results['labels']
+    return outliers.drop(columns=['label']), results
 
 
 def _cluster_and_label(X, create_and_show_plot=True):
