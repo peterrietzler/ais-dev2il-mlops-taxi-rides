@@ -141,7 +141,16 @@ Visual Studio Code: Parquet Visualizer
 1. Copy the GitHub Workflow and let it build remotely
 1. Run the Dockerfile using the remote image
 1. Run the job and the cron job
+1. Data Drift detection - Explain evidently. Check the notebook. Create a file with drift.
+1. Add monitoring.py
+1. Extend cli.py 
+1. Run drift detection and inspect resulting HTML / JSON files
+1. Create drift detection cron job
+1. https://app.evidently.cloud/v2, https://docs.evidentlyai.com/docs/setup/cloud, dashboard, alerts
+
+TODO - update versions, run GitHub pipeline, update cron job
 
 
-? static code analysis - take over from Johannes ? 
-? security vulnerability scanning - take over from Johannes ? 
+static code analysis - take over from Johannes
+security vulnerability scanning - take over from Johannes 
+

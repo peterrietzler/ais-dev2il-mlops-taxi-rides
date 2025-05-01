@@ -174,4 +174,6 @@ cython_debug/
 .pypirc
 
 work/*.outliers.parquet
-work/*.run-metadata.json
+work/*.json
+work/*.html
+workspace
