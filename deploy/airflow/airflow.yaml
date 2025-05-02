@@ -1,0 +1,83 @@
+# Creates a role that allows to work with pods and jobs. Note that in a real world scenario 
+# the best practice is apply the principle of least privilege
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: k8s-job-executor-role
+rules:
+- apiGroups: ["batch"]
+  resources: ["jobs", "jobs/status"]
+  verbs: ["*"]
+- apiGroups: [""]
+  resources: ["pods", "pods/log"]
+  verbs: ["*"]
+---
+# Allows the default service account to use the role created above
+# Note that in a real world scenario the best practice is to create a dedicated service account for workloads 
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  namespace: default
+  name: k8s-job-executor-role-rolebinding
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+roleRef:
+  kind: Role
+  name: k8s-job-executor-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: airflow
+  labels:
+    app.kubernetes.io/name: airflow
+spec:
+  containers:
+  - name: airflow
+    image: apache/airflow:3.0.0
+    args: ["standalone"]  
+    env:
+    - name: PYTHONUNBUFFERED
+      value: "1" 
+    - name: AIRFLOW__WEBSERVER__DEFAULT_PASSWORD
+      value: "admin"
+    ports:
+      - containerPort: 8080
+        name: http-web-svc
+    volumeMounts:
+    - name: airflow-dags
+      mountPath: /opt/airflow/dags
+    - name: k8s-jobs
+      mountPath: /opt/airflow/dags/k8s-jobs
+    - name: data-dir
+      mountPath: /opt/airflow/data-dir
+  volumes:
+  - name: airflow-dags
+    hostPath:
+      path: /host_mnt/Users/peter.rietzler/Documents/private/dev2il/github/ais-dev2il-mlops-taxi-rides/deploy/airflow
+      type: Directory   
+  - name: k8s-jobs
+    hostPath:
+      path: /host_mnt/Users/peter.rietzler/Documents/private/dev2il/github/ais-dev2il-mlops-taxi-rides/deploy/k8s
+      type: Directory   
+  - name: data-dir
+    hostPath:
+      path: /host_mnt/Users/peter.rietzler/Documents/private/dev2il/github/ais-dev2il-mlops-taxi-rides/work
+      type: Directory   
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: airflow-service
+spec:
+  selector:
+    app.kubernetes.io/name: airflow
+  ports:
+  - name: airflow-service
+    protocol: TCP
+    port: 8080
+    targetPort: http-web-svc

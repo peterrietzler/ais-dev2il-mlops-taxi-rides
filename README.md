@@ -147,8 +147,18 @@ Visual Studio Code: Parquet Visualizer
 1. Run drift detection and inspect resulting HTML / JSON files
 1. Create drift detection cron job
 1. https://app.evidently.cloud/v2, https://docs.evidentlyai.com/docs/setup/cloud, dashboard, alerts
+1. Deploy Airflow to K8S 
+1. Code the Dag
+1. Trigger the run 
+
 
 TODO - update versions, run GitHub pipeline, update cron job
+
+docker run -it -p 8080:8080 -v /Users/peter.rietzler/Documents/private/dev2il/github/ais-dev2il-mlops-taxi-rides/deploy/airflow:/opt/airflow/dags -v ~/.kube/config:/home/airflow/.kube/config -e "_AIRFLOW_WWW_USER_PASSWORD=admin" -e "_AIRFLOW_WWW_USER_CREATE=true" socat-airflow bash
+
+apply airflow.yaml
+get password from airflow pod
+kubectl port-forward service/airflow-service 8080:8080
 
 
 static code analysis - take over from Johannes
