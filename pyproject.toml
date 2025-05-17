@@ -11,7 +11,8 @@ dependencies = [
     "pandas==2.2.3",
     "pyarrow==19.0.1",
     "fastparquet==2024.11.0",
-    "matplotlib==3.10.1"
+    "matplotlib==3.10.1",
+    "click==8.1.8"
 ]
 
 [project.optional-dependencies]
@@ -26,3 +27,6 @@ test = [
 [tool.setuptools]
 packages = ["taxi_rides_outlier_detection"]
 include-package-data = true
+
+[project.scripts]
+detect-taxi-ride-outliers = "taxi_rides_outlier_detection.cli:detect_outliers"
