@@ -1,6 +1,5 @@
 import click
 import pandas
-import sys
 import logging
 import logging.config
 import os
@@ -68,7 +67,7 @@ def detect_input_data_drift(data_dir: str, date: str, evidently_workspace_token:
     result.save_json(drift_json_output_file)
 
     if evidently_workspace_token is not None and evidently_project_id is not None:
-        logger.info(f"Recording snapshot in evidently workspace")    
+        logger.info("Recording snapshot in evidently workspace")    
         ws = CloudWorkspace(token=evidently_workspace_token, url="https://app.evidently.ai")
         ws.add_run(evidently_project_id, result, include_data=False)
 

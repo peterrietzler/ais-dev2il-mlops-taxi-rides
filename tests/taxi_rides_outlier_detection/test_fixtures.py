@@ -12,6 +12,5 @@ import pandas as pd
 
 @pytest.fixture
 def taxi_rides_test_data() -> pd.DataFrame: 
-    from pathlib import Path
     module_dir = Path(__file__).parent
     return pd.read_parquet(module_dir / "taxi_ride_test_data.parquet") 

@@ -4,7 +4,6 @@ from sklearn import metrics
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -61,8 +60,8 @@ def _cluster_and_label(X, create_and_show_plot=True):
         'silhouetteCoefficient': metrics.silhouette_score(X, labels),
         'labels': labels,
     }
-    if create_and_show_plot == True:
-        fig = plt.figure(figsize=(10,10))
+    if create_and_show_plot:
+        plt.figure(figsize=(10,10))
         # Black removed and is used for noise instead.
         unique_labels = set(labels)
         colors = [plt.cm.cool(each)

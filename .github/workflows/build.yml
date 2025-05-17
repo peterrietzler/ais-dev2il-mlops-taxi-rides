@@ -30,6 +30,11 @@ jobs:
       - name: Run tests
         run: |
           pytest
+
+      - name: Check code style
+        run: |
+          ruff check taxi_rides_outlier_detection tests
+          
   
   build-image:
     if: github.ref == 'refs/heads/main'

@@ -22,7 +22,8 @@ dev = [
     "notebook==7.3.3"
 ]
 test = [
-    "pytest==8.3.5"
+    "pytest==8.3.5",
+    "ruff==0.11.10"
 ]
 
 [project.scripts]
