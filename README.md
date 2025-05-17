@@ -23,17 +23,21 @@ After some discussions with the developers of the taxi ride management software 
 You additionally agree on the following interface
 - Data is exchanged in [Apache Parquet](https://parquet.apache.org/) format
 - Input files follow the pattern `yyyy-mm-dd.taxi-rides.parquet`
-- Output files follow are pattern `yyyy-mm-dd.taxi-rides.outliers.parquet`
+- Output files follow the pattern `yyyy-mm-dd.taxi-rides.outliers.parquet`
 
 Input file structure
-- `tpep_pickup_datetime` ... Pickup time in UTC
-- `tpep_dropoff_datetime` ... Dropoff time in UTC
-- `trip_distance` ... Ride distance in miles
+| Column Name              | Description                  |
+|--------------------------|-----------------------------|
+| `tpep_pickup_datetime`   | Pickup time in UTC          |
+| `tpep_dropoff_datetime`  | Dropoff time in UTC         |
+| `trip_distance`          | Ride distance in miles      |
 
 Output file structure
-- `ride_id` ... The row index within the input file
-- `ride_dist` ... The distance of the ride in miles
-- `ride_time` ... The time of the ride in seconds
+| Column Name | Description |
+|-------------|-------------|
+| `ride_id`   | The row index within the input file |
+| `ride_dist` | The distance of the ride in miles   |
+| `ride_time` | The time of the ride in seconds     |
 
 ![System Architecture](system-architecture.drawio.png)
 
