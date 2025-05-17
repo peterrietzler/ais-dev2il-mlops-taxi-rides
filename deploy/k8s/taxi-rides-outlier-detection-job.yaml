@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: taxi-rides-outlier-detection-job
+  namespace: default
+spec:
+  backoffLimit: 3
+  activeDeadlineSeconds: 600
+  template:
+    spec:
+      containers:
+      - name: taxi-rides-outlier-detection
+        image: ghcr.io/peterrietzler/taxi-rides-outlier-detection:1.0.1
+        imagePullPolicy: IfNotPresent
+        command: ["detect-taxi-ride-outliers", "/data"]
+        volumeMounts:
+        - name: local-folder
+          mountPath: /data
+      volumes:
+      - name: local-folder
+        hostPath:
+          path: /host_mnt/Users/peter.rietzler/Documents/private/dev2il/github/ais-dev2il-mlops-taxi-rides/work
+          type: Directory
+      restartPolicy: OnFailure
