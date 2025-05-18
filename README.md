@@ -59,8 +59,6 @@ pip install .[dev]
 pip install .[test]
 ```
 
-Install the Visual Studio Code [Parquet Visualizer](https://marketplace.visualstudio.com/items/?itemName=lucien-martijn.parquet-visualizer) extension.
-
 ## Notebook environment
 
 Run `jupyter notebook` to work with the notebooks without IDE.
