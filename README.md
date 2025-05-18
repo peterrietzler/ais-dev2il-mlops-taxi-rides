@@ -120,6 +120,20 @@ Further useful commands
 - Delete a pod: `kubectl delete pod POD_NAME`
 - Delete a job or cron job: `kubectl delete -f deploy/k8s/local/taxi-rides-outlier-detection-cronjob.yaml`
 
+## Running Input Data Drift Detection
+
+Run `detect-input-data-drift`. The command works similar to 
+`detect-taxi-ride-outliers`. Also all K8S options are available similarly.
+
+## Record Monitoring Snapshots using Evidently
+
+Get more information at https://github.com/evidentlyai/evidently
+and https://docs.evidentlyai.com/docs/platform/monitoring_overview
+
+1. Run `evidently ui` in the root project folder to start the user interface
+1. Run `detect-input-data-drift` using the `--evidently-project-id` option to record snapshots
+
+---
 
 Parquet
 Visual Studio Code: Parquet Visualizer

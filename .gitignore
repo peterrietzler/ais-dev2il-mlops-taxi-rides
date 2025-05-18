@@ -176,4 +176,3 @@ cython_debug/
 work/*.outliers.parquet
 work/*.json
 work/*.html
-workspace

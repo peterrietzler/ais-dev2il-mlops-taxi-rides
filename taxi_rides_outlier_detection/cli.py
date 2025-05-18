@@ -1,13 +1,14 @@
 import click
 import pandas
+import sys
 import logging
 import logging.config
 import os
 from taxi_rides_outlier_detection import outlier_detector
-from taxi_rides_outlier_detection import monitoring
 from datetime import datetime
 import json
-from evidently.ui.workspace import CloudWorkspace
+from taxi_rides_outlier_detection import monitoring
+
 
 if os.path.exists('logging.conf'):
     logging.config.fileConfig('logging.conf')
@@ -42,9 +43,8 @@ def detect_outliers(data_dir: str, date: str):
 @click.command()
 @click.argument('data_dir', type=click.Path(exists=True, dir_okay=True, file_okay=False))
 @click.argument('date', type=click.STRING, required=False)
-@click.option('--evidently-workspace-token', type=click.STRING, help='The token to authenticate for the evidently workspace')
-@click.option('--evidently-project-id', type=click.STRING, help='The evidently project id where the snapshot should be saved to')
-def detect_input_data_drift(data_dir: str, date: str, evidently_workspace_token: str, evidently_project_id: str):
+@click.option('--evidently-project-id', required=False, type=click.STRING, help='The evidently project id where the snapshot should be saved to')
+def detect_input_data_drift(data_dir: str, date: str, evidently_project_id: str):
     logger = logging.getLogger(__name__)
     if(date is None):
         date = datetime.now().strftime("%Y-%m-%d")
@@ -66,8 +66,8 @@ def detect_input_data_drift(data_dir: str, date: str, evidently_workspace_token:
     logger.info(f"Writing results to: {drift_json_output_file}")    
     result.save_json(drift_json_output_file)
 
-    if evidently_workspace_token is not None and evidently_project_id is not None:
-        logger.info("Recording snapshot in evidently workspace")    
-        ws = CloudWorkspace(token=evidently_workspace_token, url="https://app.evidently.ai")
-        ws.add_run(evidently_project_id, result, include_data=False)
-
+    if evidently_project_id is not None:
+        from evidently.ui.workspace import Workspace
+        logger.info(f"Recording data drift snapshot")    
+        workspace = Workspace("workspace")
+        workspace.add_run(evidently_project_id, result)
