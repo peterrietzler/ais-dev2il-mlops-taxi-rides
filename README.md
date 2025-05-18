@@ -1,7 +1,7 @@
 # AIS DEV2IL - MLOps - Taxi Ride Outlier Detection
 
 This is an example project used in the exercise course of the DEV2IL lecture. 
-It implements the batch predication high level ML system design and uses the *Train-Run* training system option.
+It implements the batch prediction high level ML system design and uses the *Train-Run* training system option.
 
 ## Business Problem
 
