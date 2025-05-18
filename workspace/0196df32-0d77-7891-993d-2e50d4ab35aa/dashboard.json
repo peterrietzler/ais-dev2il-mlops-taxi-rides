@@ -1,0 +1,103 @@
+{
+    "tabs": [
+        {
+            "id": "34187a69-8a99-44f9-815f-ce08fab69d8c",
+            "title": "General",
+            "panels": [
+                "0196df2f-df66-71d1-994c-28c60eb755b2",
+                "0196df2f-df68-7dd7-98b1-f62b35b2ceef",
+                "0196df2f-df69-7c1d-bb21-009ad92435fb",
+                "0196df2f-df6a-7efc-95da-2f9f2b289cc3",
+                "0196df2f-df6b-7439-bf31-5bcbe9fe554a",
+                "0196df2f-df6c-7ac2-9433-1890603a3919",
+                "0196df2f-df6c-7ac2-9433-1890603a3947"
+            ]
+        }
+    ],
+    "panels": [
+        {
+            "id": "0196df2f-df66-71d1-994c-28c60eb755b2",
+            "title": "Taxi Rides Data Drift Monitoring",
+            "subtitle": null,
+            "size": "full",
+            "values": [],
+            "plot_params": {
+                "plot_type": "text"
+            }
+        },
+        {
+            "id": "0196df2f-df68-7dd7-98b1-f62b35b2ceef",
+            "title": "Share of Drifted Features",
+            "subtitle": null,
+            "size": "full",
+            "values": [
+                {
+                    "legend": "share",
+                    "tags": [],
+                    "metadata": {},
+                    "metric": "evidently:metric_v2:DriftedColumnsCount",
+                    "metric_labels": {
+                        "value_type": "share"
+                    },
+                    "view_params": {}
+                }
+            ],
+            "plot_params": {
+                "plot_type": "counter",
+                "aggregation": "last"
+            }
+        },
+        {
+            "id": "0196df2f-df6c-7ac2-9433-1890603a3919",
+            "title": "Features Drift (Wasserstein Distance)",
+            "subtitle": null,
+            "size": "full",
+            "values": [
+                {
+                    "legend": "Trip Distance",
+                    "tags": [],
+                    "metadata": {},
+                    "metric": "evidently:metric_v2:ValueDrift",
+                    "metric_labels": {
+                        "column": "trip_distance"
+                    },
+                    "view_params": {}
+                },                {
+                    "legend": "Ride Time",
+                    "tags": [],
+                    "metadata": {},
+                    "metric": "evidently:metric_v2:ValueDrift",
+                    "metric_labels": {
+                        "column": "ride_time"
+                    },
+                    "view_params": {}
+                }
+            ],
+            "plot_params": {
+                "plot_type": "line"
+            }
+        },
+        {
+            "id": "0196df2f-df6c-7ac2-9433-1890603a3947",
+            "title": "# of Drifted Columns",
+            "subtitle": null,
+            "size": "full",
+            "values": [
+                {
+                    "legend": "# of Drifted Columns",
+                    "tags": [],
+                    "metadata": {},
+                    "metric": "evidently:metric_v2:DriftedColumnsCount",
+                    "metric_labels": {
+                        "value_type": "count"
+                    },
+                    "view_params": {}
+                }
+            ],
+            "plot_params": {
+                "plot_type": "line"
+            }
+        }
+    ]
+}
+

@@ -12,7 +12,8 @@ dependencies = [
     "pyarrow==19.0.1",
     "fastparquet==2024.11.0",
     "matplotlib==3.10.1",
-    "click==8.1.8"
+    "click==8.1.8",
+    "evidently==0.7.3"
 ]
 
 [project.optional-dependencies]
@@ -30,3 +31,7 @@ include-package-data = true
 
 [project.scripts]
 detect-taxi-ride-outliers = "taxi_rides_outlier_detection.cli:detect_outliers"
+detect-input-data-drift = "taxi_rides_outlier_detection.cli:detect_input_data_drift"
+
+[tool.setuptools.package-data]
+"taxi_rides_outlier_detection" = ["reference.taxi-rides.parquet"]
