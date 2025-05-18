@@ -133,52 +133,11 @@ and https://docs.evidentlyai.com/docs/platform/monitoring_overview
 1. Run `evidently ui` in the root project folder to start the user interface
 1. Run `detect-input-data-drift` using the `--evidently-project-id` option to record snapshots
 
----
+## Orchestrate Taxi Ride Outlier Detection via Airflow
 
-Parquet
-Visual Studio Code: Parquet Visualizer
+![Airflow Workflow Architecture](airflow-workflow-architecture.drawio.png)
 
-
-1. Setup pyproject.toml (minimal, we'll extend it while creating the notebook)
-1. Copy the notebook
-1. Download the data
-1. Analyse the data. Explain simple SQL with Parquet Visualizer Extension
-1. Compare the file sizes (csv kaggle, parquet)
-1. Walk through the notebook and setup the dependencies (dev deps, runtime deps)
-1. Setup the python module. Also include it in pyproject.toml. Install the source once available (pip ... -e)
-1. Create the outlier detection function (empty)
-1. Create the test fixture
-1. Create the test
-1. TDD until test runs (pytest -s)
-1. Copy over the code from the notebook 
-1. Make the test green with real life code
-1. Switch to logging (pytest -s --log-cli-level=DEBUG)
-1. Create the CLI script. TODO log files, etc. ?
-1. Explain the click library
-1. Create the Dockerfile, build it and run it on the local system
-1. Copy the GitHub Workflow and let it build remotely
-1. Run the Dockerfile using the remote image
-1. Run the job and the cron job
-1. Data Drift detection - Explain evidently. Check the notebook. Create a file with drift.
-1. Add monitoring.py
-1. Extend cli.py 
-1. Run drift detection and inspect resulting HTML / JSON files
-1. Create drift detection cron job
-1. https://app.evidently.cloud/v2, https://docs.evidentlyai.com/docs/setup/cloud, dashboard, alerts
-1. Deploy Airflow to K8S 
-1. Code the Dag
-1. Trigger the run 
-
-
-TODO - update versions, run GitHub pipeline, update cron job
-
-docker run -it -p 8080:8080 -v /Users/peter.rietzler/Documents/private/dev2il/github/ais-dev2il-mlops-taxi-rides/deploy/airflow:/opt/airflow/dags -v ~/.kube/config:/home/airflow/.kube/config -e "_AIRFLOW_WWW_USER_PASSWORD=admin" -e "_AIRFLOW_WWW_USER_CREATE=true" socat-airflow bash
-
-apply airflow.yaml
-get password from airflow pod
-kubectl port-forward service/airflow-service 8080:8080
-
-
-static code analysis - take over from Johannes
-security vulnerability scanning - take over from Johannes 
-
+1. `kubectl apply -f deploy/airflow`
+1. Get the `admin` password via `kubectl logs -f airflow`
+1. `kubectl port-forward service/airflow-service 8080:8080`
+1. Login at http://localhost:8080 (`admin` / password as obtained from the logs)
