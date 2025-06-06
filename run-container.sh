@@ -8,4 +8,4 @@ if [ ! -d "$DATA_DIR" ]; then
     exit 1
 fi
 
-docker run --rm -v $(pwd)/$DATA_DIR:/data taxi-rides-outlier-detection /data $DATE
+docker run --rm -v $(pwd)/$DATA_DIR:/data taxi-rides-outlier-detection model /data $DATE

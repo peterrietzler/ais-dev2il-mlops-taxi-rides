@@ -1,7 +1,11 @@
 # AIS DEV2IL - MLOps - Taxi Ride Outlier Detection
 
 This is an example project used in the exercise course of the DEV2IL lecture. 
-It implements the batch prediction high level ML system design and uses the *Train-Run* training system option.
+It implements the batch prediction high level ML system design. 
+
+There are different checkpoints, which are managed as Git tags. Checkpoints 1 - 8 implement the 
+the *Train-Run* training system option, and starting with checkpoint 9, the projects switches 
+to the *Train-Persist-Run* raining system option.
 
 ## Business Problem
 
@@ -82,9 +86,17 @@ In order to see logging and stdout outputs, use `pytest -s --log-cli-level=DEBUG
 
 ## Running the outlier detector on your developer machine
 
-Run `detect-taxi-ride-outliers`. 
+### Outlier Detector based on Clustering
+
+Run `detect-taxi-ride-outliers`.
 
 Example data can be found in the [work](./work) folder. Run `detect-taxi-ride-outliers ./work 2025-01-15` to detect outliers for example data.
+
+### Outlier Detector based on Classification
+
+Run `train-classifier data/labeled/taxi-rides.parquet model` to train the classifier and store it in the file `model`
+
+Run `detect-taxi-ride-outliers-with-classifier`.
 
 ## Working with Docker on your developer machine
 
