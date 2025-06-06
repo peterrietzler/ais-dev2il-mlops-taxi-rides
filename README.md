@@ -47,6 +47,9 @@ Output file structure
 
 ## Setup
 
+
+Make sure that you are using a `bash` terminal. 
+
 ```
 # Create and activate a virtual environment
 python -m venv .venv
@@ -58,6 +61,13 @@ pip install -e .
 pip install .[dev]
 pip install .[test]
 ```
+
+### For Windows Users
+
+The commands won't work with Power Shell. Use e.g. Git Bash in the Visual Studio Code terminal. 
+
+Depending on your Python installation, your `.venv` might look a bit different. If you are having troubles running 
+`source .venv/bin/activate` have a look at the `.venv` folder and adapt the path (most likely it's `source .venv/Scripts/activate` then)
 
 ## Notebook environment
 
