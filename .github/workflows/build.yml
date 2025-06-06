@@ -40,6 +40,8 @@ jobs:
     container:
       image: python:3.13-slim
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Install training code
         run: |
           pip install -e .
