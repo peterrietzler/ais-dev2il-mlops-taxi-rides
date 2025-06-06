@@ -1,6 +1,5 @@
 import click
 import pandas
-import sys
 import logging
 import logging.config
 import os
@@ -70,7 +69,7 @@ def detect_input_data_drift(data_dir: str, date: str, evidently_project_id: str)
 
     if evidently_project_id is not None:
         from evidently.ui.workspace import Workspace
-        logger.info(f"Recording data drift snapshot")    
+        logger.info("Recording data drift snapshot")    
         workspace = Workspace("workspace")
         workspace.add_run(evidently_project_id, result)
 
