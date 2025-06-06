@@ -178,5 +178,4 @@ work/*.json
 work/*.html
 notebooks/taxi-ride-outlier-detector.model.pkl
 model
-.gitignore
 model.metadata.json
