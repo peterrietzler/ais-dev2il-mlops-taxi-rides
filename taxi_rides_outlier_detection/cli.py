@@ -1,4 +1,5 @@
 import click
+import mlflow
 import pandas
 import logging
 import logging.config
@@ -83,7 +84,18 @@ def train_random_forest_classifier(labeled_data_file: str, model_output_file: st
     data = pandas.read_parquet(labeled_data_file)
 
     logger.info("Training outlier detection classifier")
-    model, metadata = outlier_detector_classifier.train_random_forest_classifier(data)
+    mlflow.set_experiment(f"random-forest-classifier")
+    # turn on auto logging models. See https://mlflow.org/docs/latest/ml/tracking/autolog
+    mlflow.autolog()
+    with mlflow.start_run():
+        model, metadata = outlier_detector_classifier.train_random_forest_classifier(data)
+        # log the data used for training
+        mlflow.log_artifact(labeled_data_file)
+        # log some custom metrics
+        for false_key, false_value in metadata["False"].items():
+            mlflow.log_metric(f"False_{false_key}", false_value)
+        for false_key, false_value in metadata["True"].items():
+            mlflow.log_metric(f"True_{false_key}", false_value)
     logger.info("Model training completed")
     
     logger.info("Storing model to %s", model_output_file)
@@ -104,7 +116,17 @@ def train_random_forest_classifier_v2(labeled_data_file: str, model_output_file:
     data = pandas.read_parquet(labeled_data_file)
 
     logger.info("Training outlier detection classifier")
-    model, metadata = outlier_detector_classifier.train_random_forest_classifier_v2(data)
+    mlflow.set_experiment(f"random-forest-classifier-v2")
+    mlflow.autolog()
+    with mlflow.start_run():
+        model, metadata = outlier_detector_classifier.train_random_forest_classifier_v2(data)
+        # log the data used for training
+        mlflow.log_artifact(labeled_data_file)
+        # log some custom metrics
+        for false_key, false_value in metadata["False"].items():
+            mlflow.log_metric(f"False_{false_key}", false_value)
+        for false_key, false_value in metadata["True"].items():
+            mlflow.log_metric(f"True_{false_key}", false_value)
     logger.info("Model training completed")
     
     logger.info("Storing model to %s", model_output_file)
@@ -125,7 +147,17 @@ def train_logistic_regression_classifier(labeled_data_file: str, model_output_fi
     data = pandas.read_parquet(labeled_data_file)
 
     logger.info("Training outlier detection classifier")
-    model, metadata = outlier_detector_classifier.train_logistic_regression_classifier(data)
+    mlflow.set_experiment(f"logistic-regression-classifier")
+    mlflow.autolog()
+    with mlflow.start_run():
+        model, metadata = outlier_detector_classifier.train_logistic_regression_classifier(data)
+        # log the data used for training
+        mlflow.log_artifact(labeled_data_file)
+        # log some custom metrics
+        for false_key, false_value in metadata["False"].items():
+            mlflow.log_metric(f"False_{false_key}", false_value)
+        for false_key, false_value in metadata["True"].items():
+            mlflow.log_metric(f"True_{false_key}", false_value)
     logger.info("Model training completed")
     
     logger.info("Storing model to %s", model_output_file)
