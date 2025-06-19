@@ -179,3 +179,4 @@ work/*.html
 notebooks/taxi-ride-outlier-detector.model.pkl
 model
 model.metadata.json
+.DS_Store
