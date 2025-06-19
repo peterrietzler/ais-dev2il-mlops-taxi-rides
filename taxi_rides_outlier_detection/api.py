@@ -17,7 +17,7 @@ def forecast_sales(
     trip_distance: float = Query(..., description="Trip distance in miles")
 ):    
     import mlflow
-    model_uri = f"models:/taxi-ride-outlier-detection-model/latest"
+    model_uri = "models:/taxi-ride-outlier-detection-model/latest"
     try:
         import mlflow.pyfunc
         model = mlflow.pyfunc.load_model(model_uri)

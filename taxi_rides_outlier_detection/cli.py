@@ -84,7 +84,7 @@ def train_random_forest_classifier(labeled_data_file: str, model_output_file: st
     data = pandas.read_parquet(labeled_data_file)
 
     logger.info("Training outlier detection classifier")
-    mlflow.set_experiment(f"random-forest-classifier")
+    mlflow.set_experiment("random-forest-classifier")
     # turn on auto logging models. See https://mlflow.org/docs/latest/ml/tracking/autolog
     mlflow.autolog()
     with mlflow.start_run():
@@ -116,7 +116,7 @@ def train_random_forest_classifier_v2(labeled_data_file: str, model_output_file:
     data = pandas.read_parquet(labeled_data_file)
 
     logger.info("Training outlier detection classifier")
-    mlflow.set_experiment(f"random-forest-classifier-v2")
+    mlflow.set_experiment("random-forest-classifier-v2")
     mlflow.autolog()
     with mlflow.start_run():
         model, metadata = outlier_detector_classifier.train_random_forest_classifier_v2(data)
@@ -147,7 +147,7 @@ def train_logistic_regression_classifier(labeled_data_file: str, model_output_fi
     data = pandas.read_parquet(labeled_data_file)
 
     logger.info("Training outlier detection classifier")
-    mlflow.set_experiment(f"logistic-regression-classifier")
+    mlflow.set_experiment("logistic-regression-classifier")
     mlflow.autolog()
     with mlflow.start_run():
         model, metadata = outlier_detector_classifier.train_logistic_regression_classifier(data)
