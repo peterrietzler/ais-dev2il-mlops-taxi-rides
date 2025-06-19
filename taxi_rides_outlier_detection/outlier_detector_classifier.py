@@ -3,7 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 import pandas as pd
 
-def train_classifier(labeled_taxi_rides_data: pd.DataFrame) -> tuple[RandomForestClassifier, dict]:
+def train_random_forest_classifier(labeled_taxi_rides_data: pd.DataFrame) -> tuple[RandomForestClassifier, dict]:
     # Features and target
     X = labeled_taxi_rides_data[['ride_time', 'trip_distance']]
     y = labeled_taxi_rides_data['outlier']
