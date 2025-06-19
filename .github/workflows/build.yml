@@ -34,7 +34,7 @@ jobs:
         run: |
           pytest
   
-  train-model:
+  train-models:
     runs-on: ubuntu-latest
     needs: test
     container:
@@ -45,12 +45,23 @@ jobs:
       - name: Install training code
         run: |
           pip install -e .
-      - name: Train Model 
+      - name: Train Random Forest Classifier 
         run: |
-          train-random-forest-classifier data/labeled/taxi-rides.parquet model
-            echo '```json' >> $GITHUB_STEP_SUMMARY
-            cat model.metadata.json >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
+          train-random-forest-classifier data/labeled/taxi-rides.parquet random-forest-model
+          echo '### Random Forest Classifier' >> $GITHUB_STEP_SUMMARY
+          echo '```json' >> $GITHUB_STEP_SUMMARY
+          cat random-forest-model.metadata.json >> $GITHUB_STEP_SUMMARY
+      - name: Train Random Forest Classifier V2
+        run: |
+          train-random-forest-classifier-v2 data/labeled/taxi-rides.parquet random-forest-model-v2
+          echo '### Random Forest Classifier V2' >> $GITHUB_STEP_SUMMARY
+          echo '```json' >> $GITHUB_STEP_SUMMARY
+          cat random-forest-model-v2.metadata.json >> $GITHUB_STEP_SUMMARY
+
+      - name: Select best model by f1-score
+        run: |
+          sh select-best-model.sh random-forest-model.metadata.json random-forest-model-v2.metadata.json
+
       - name: Upload model artifact
         uses: actions/upload-artifact@v4
         with:
@@ -60,7 +71,7 @@ jobs:
   build-image:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    needs: train-model
+    needs: train-models
     permissions:
       contents: read
       packages: write

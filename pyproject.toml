@@ -30,7 +30,9 @@ test = [
 detect-taxi-ride-outliers = "taxi_rides_outlier_detection.cli:detect_outliers"
 detect-input-data-drift = "taxi_rides_outlier_detection.cli:detect_input_data_drift"
 train-random-forest-classifier = "taxi_rides_outlier_detection.cli:train_random_forest_classifier"
+train-random-forest-classifier-v2 = "taxi_rides_outlier_detection.cli:train_random_forest_classifier_v2"
 detect-taxi-ride-outliers-with-classifier = "taxi_rides_outlier_detection.cli:detect_outliers_with_classifier"
+
 
 [tool.setuptools]
 packages = ["taxi_rides_outlier_detection"]
