@@ -48,7 +48,9 @@ jobs:
       - name: Train Model 
         run: |
           train-random-forest-classifier data/labeled/taxi-rides.parquet model
-          cat model.metadata.json' >> $GITHUB_STEP_SUMMARY
+            echo '```json' >> $GITHUB_STEP_SUMMARY
+            cat model.metadata.json >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
       - name: Upload model artifact
         uses: actions/upload-artifact@v4
         with:
