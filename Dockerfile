@@ -8,4 +8,4 @@ COPY pyproject.toml /app
 
 RUN pip install .
 
-ENTRYPOINT [ "detect-taxi-ride-outliers-with-classifier" ]
+ENTRYPOINT [ "detect-taxi-ride-outliers-with-classifier", "model" ]

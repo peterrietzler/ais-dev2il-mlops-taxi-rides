@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.pipeline import Pipeline
 from sklearn.base import BaseEstimator, TransformerMixin
 import numpy as np
+from sklearn.linear_model import LogisticRegression
 
 def train_random_forest_classifier(labeled_taxi_rides_data: pd.DataFrame) -> tuple[RandomForestClassifier, dict]:
     # Features and target
@@ -51,6 +52,24 @@ def train_random_forest_classifier_v2(labeled_taxi_rides_data: pd.DataFrame) -> 
 
     return (clf, report)
 
+def train_logistic_regression_classifier(labeled_taxi_rides_data: pd.DataFrame) -> tuple[LogisticRegression, dict]:
+    # Features and target
+    X = labeled_taxi_rides_data[['ride_time', 'trip_distance']]
+    y = labeled_taxi_rides_data['outlier']
+
+    # Split data for training and testing
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42, stratify=y
+    )
+
+    clf = LogisticRegression(class_weight='balanced', random_state=42, max_iter=1000)
+    clf.fit(X_train, y_train)
+
+    y_pred = clf.predict(X_test)
+    report = classification_report(y_test, y_pred, digits=4, output_dict=True)
+
+    return (clf, report)
+
 class AverageSpeedAdder(BaseEstimator, TransformerMixin):
     def fit(self, X, y=None):
         return self
@@ -61,7 +80,7 @@ class AverageSpeedAdder(BaseEstimator, TransformerMixin):
 
 
 
-def detect_outliers(taxi_rides_data: pd.DataFrame, model: RandomForestClassifier) -> pd.DataFrame:
+def detect_outliers(taxi_rides_data: pd.DataFrame, model) -> pd.DataFrame:
     raw_data = taxi_rides_data
 
     data = pd.DataFrame()

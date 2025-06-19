@@ -57,10 +57,16 @@ jobs:
           echo '### Random Forest Classifier V2' >> $GITHUB_STEP_SUMMARY
           echo '```json' >> $GITHUB_STEP_SUMMARY
           cat random-forest-model-v2.metadata.json >> $GITHUB_STEP_SUMMARY
+      - name: Train Logistic Regression Classifier
+        run: |
+          train-logistic-regression-classifier data/labeled/taxi-rides.parquet logistc-regression-model
+          echo '### Logistic Regression Classifier' >> $GITHUB_STEP_SUMMARY
+          echo '```json' >> $GITHUB_STEP_SUMMARY
+          cat logistc-regression-model.metadata.json >> $GITHUB_STEP_SUMMARY
 
       - name: Select best model by f1-score
         run: |
-          sh select-best-model.sh random-forest-model.metadata.json random-forest-model-v2.metadata.json
+          sh select-best-model.sh random-forest-model.metadata.json random-forest-model-v2.metadata.json logistc-regression-model.metadata.json
 
       - name: Upload model artifact
         uses: actions/upload-artifact@v4

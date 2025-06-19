@@ -116,6 +116,27 @@ def train_random_forest_classifier_v2(labeled_data_file: str, model_output_file:
     with open(metadata_output_file, 'w') as metadata_file:
         json.dump(metadata, metadata_file, indent=4)
 
+@click.command()
+@click.argument('labeled_data_file', type=click.Path(exists=True, dir_okay=False, file_okay=True))
+@click.argument('model_output_file', type=click.STRING, required=True)
+def train_logistic_regression_classifier(labeled_data_file: str, model_output_file: str):
+    logger = logging.getLogger(__name__)
+    logger.info(f"Processing taxi ride data from: {labeled_data_file}")
+    data = pandas.read_parquet(labeled_data_file)
+
+    logger.info("Training outlier detection classifier")
+    model, metadata = outlier_detector_classifier.train_logistic_regression_classifier(data)
+    logger.info("Model training completed")
+    
+    logger.info("Storing model to %s", model_output_file)
+    with open(model_output_file, "wb") as f:
+        pickle.dump(model, f)
+
+    metadata_output_file = f"{model_output_file}.metadata.json"
+    logger.info(f"Writing metadata to: {metadata_output_file}")
+    with open(metadata_output_file, 'w') as metadata_file:
+        json.dump(metadata, metadata_file, indent=4)
+
 
 @click.command()
 @click.argument('model_file', type=click.Path(exists=True, dir_okay=False, file_okay=True))
