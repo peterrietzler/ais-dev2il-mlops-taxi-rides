@@ -254,3 +254,28 @@ Start the MLFlow server: `mlflow server` and open the URL in your browser.
 Start the MLFlow server: `mlflow server`.
 
 Run `fastapi dev taxi_rides_outlier_detection/api.py` and open http://127.0.0.1:8000/docs in your browser.
+
+## For the Curios: KISSifying Infrastructure ?
+
+In our final batch prediction (checkpoint 9), we've used quite some infrastructure to run our task. E.g. a K8S job itself is already an orchestrator, as it starts and controls PODs, watching if they run and restarts them if necessary. You could also hand over this responsibility to Airflow as well. 
+
+All solutions, however, come with their pros & cons. This section lists some options. There's no "best solution" - you need to decide on the tradeoffs and wins on your own. 
+
+### Airflow -> K8S Job -> Docker -> Python
+
+The solution as done here. This is the most complicated, but also the most stable one. K8S and Docker are made to run any workload and force you to follow the immutable server pattern, which makes it stable, and easy to trace and reproduce. K8S is also e.g. designed to distribute workloads across multiple machine types, which is a common requirement for ML powered systems.
+
+### Airflow -> K8S Pod -> Docker -> Python
+
+Spawn PODs for your tasks (using `KubernetesPodOperator`). Removes the job resource from K8S. You need to configure e.g. retry handling in your Airflow DAG.
+
+You won't have much of a feature loss, except for the fact that it's not so clear on K8S level anymore what all these pods are. Everybody knows what a job's doing and what the characteristics of it are, but a POD can also represent other types of workload, e.g. a server, which is running permanently. *Don't make me think*.
+
+### Airflow -> Docker -> Python
+
+Get rid of K8S at all, but spawn a Docker container instead (using `DockerOperator`). Airflow is, like K8S, also a clustered system that can distribute work across it's cluster. The Docker container will then be executed on the Airflow cluster nodes, which you need to take care of the same way as you need to take care of you K8S node pools.
+
+### Airflow -> Python 
+
+You could execute your Python code directly with Airflow. There's the possibility to run tasks using a Python virtual environment, which allows you to package your module as a Python package and either directly use the code in your DAG tasks or run the CLI commands. 
+
