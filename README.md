@@ -35,7 +35,7 @@ Acceptance Criteria
 
 Implementation Notes: This user story is implemented by checkpoints 1 to 8.
 
-## High Level System Architecture
+### High Level System Architecture
 
 After some discussions with the developers of the taxi ride management software system, you agree on the following system integration architecture: 
 - A file containing information on all taxi rides is put to a shared location at latest at 02:00 AM on the next day
@@ -62,16 +62,16 @@ Output file structure
 
 ![System Architecture](system-architecture.drawio.png)
 
-## Outlier Detector Architecture
+### Outlier Detector Architecture
 
 ![Outlier Detector Architecture](outlier-detector-architecture.drawio.png)
 
-## Hint for For Windows Users
+### Hint for For Windows Users
 
 Everyting should work out without problems if your are using WSL. If you, however, are using another terminal, such as Power Shell or Git Bash, you might be confronted with one or the other problem that you need to solve on your own. 
 
 
-## Setup
+### Setup
 
 Make sure that you are using a `bash` terminal.
 
@@ -87,45 +87,45 @@ pip install .[dev]
 pip install .[test]
 ```
 
-### Hint for For Windows Users
+#### Hint for For Windows Users
 
 The commands won't work with Power Shell. Use e.g. Git Bash in the Visual Studio Code terminal. 
 
 Depending on your Python installation, your `.venv` might look a bit different. If you are having troubles running 
 `source .venv/bin/activate` have a look at the `.venv` folder and adapt the path (most likely it's `source .venv/Scripts/activate` then)
 
-## Notebook environment
+### Notebook environment
 
 Run `jupyter notebook` to work with the notebooks without IDE.
 
 When using an IDE, make sure that the IDE is configured to use the project's virtual environment and that that the notebook working directory is the directory where the notebook files is located.
 
-## Testing 
+### Testing 
 
 Run `pytest`.
 In order to see logging and stdout outputs, use `pytest -s --log-cli-level=DEBUG`.
 
-## Running the outlier detector on your developer machine
+### Running the outlier detector on your developer machine
 
-### Outlier Detector
+#### Outlier Detector
 
 Run `detect-taxi-ride-outliers`.
 
 Example data can be found in the [work](./work) folder. Run `detect-taxi-ride-outliers ./work 2025-01-15` to detect outliers for example data.
 
-## Working with Docker on your developer machine
+### Working with Docker on your developer machine
 
 To build the `taxi-rides-outlier-detection` image, run `sh build-image.sh`. 
 
 To find outliers from a file on your local file system run `sh run-container.sh`. Run `sh run-container.sh ./work 2025-01-15` to detect outliers for example data.
 
-### Hint for Windows Users
+#### Hint for Windows Users
 
 `run-container.sh` mounts an absolute path as volume. This should work out fine, when you are using WSL. WSL usually mounts your C: drive to `/mnt/c` - the used `pwd` command will reflect this. If you are using other shells, you will need to either pass a relative path or replace the `\` of your path with `/`. 
 
-## Working With the GitHub Packages Container Registry
+### Working With the GitHub Packages Container Registry
 
-### Using the Terminal 
+#### Using the Terminal 
 
 In order to authenticate, you need to create a personal access token and authenticate. Follow the steps as outlined here: https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic
 
@@ -133,7 +133,7 @@ To build the `taxi-rides-outlier-detection` image, run `sh build-image-github.sh
 
 To find outliers from a file on your local file system run `sh run-container-gitlab.sh`. Run `sh run-container-gitlab.sh peterrietzler 1.0.1 ./work 2025-01-15` to detect outliers for example data.
 
-### Using GitHub Actions
+#### Using GitHub Actions
 
 See https://docs.github.com/en/actions/use-cases-and-examples/publishing-packages/publishing-docker-images#publishing-images-to-github-packages
 
@@ -144,7 +144,7 @@ In order to allow your workflow to publish docker images, you need to connect th
 1. Open *Package settings*
 1. Add your repository and select the *Write* role for it
 
-## Running the Kubernetes Cron Job
+### Running the Kubernetes Cron Job
 
 As only absolute paths can be mounted in K8S as volume, you need to **adapt the volume mounts in the deployment descriptors**.
 
@@ -159,16 +159,16 @@ Further useful commands
 - Delete a pod: `kubectl delete pod POD_NAME`
 - Delete a job or cron job: `kubectl delete -f deploy/k8s/local/taxi-rides-outlier-detection-cronjob.yaml`
 
-### Hint for Windows Users
+#### Hint for Windows Users
 
 Docker desktop mounts your C: drive to `/run/desktop/mnt/host/c`. 
 
-## Running Input Data Drift Detection
+### Running Input Data Drift Detection
 
 Run `detect-input-data-drift`. The command works similar to 
 `detect-taxi-ride-outliers`. Also all K8S options are available similarly.
 
-## Record Monitoring Snapshots using Evidently
+### Record Monitoring Snapshots using Evidently
 
 Get more information at https://github.com/evidentlyai/evidently
 and https://docs.evidentlyai.com/docs/platform/monitoring_overview
@@ -176,7 +176,7 @@ and https://docs.evidentlyai.com/docs/platform/monitoring_overview
 1. Run `evidently ui` in the root project folder to start the user interface
 1. Run `detect-input-data-drift` using the `--evidently-project-id` option to record snapshots
 
-## Orchestrate Taxi Ride Outlier Detection via Airflow
+### Orchestrate Taxi Ride Outlier Detection via Airflow
 
 ![Airflow Workflow Architecture](airflow-workflow-architecture.drawio.png)
 
@@ -194,11 +194,11 @@ Acceptance Criteria
 
 Implementation Notes: This user story is implemented by checkpoint 9.
 
-## High Level System Architecture
+### High Level System Architecture
 
 Will stay the same, except for the fact that the model training system is going to be changed. 
 
-## Training System Design
+### Training System Design
 
 The labeleled data is provided in the file [.data/labeled/taxi-rides.parquet](./data/labeled/taxi-rides.parquet). 
 
@@ -206,7 +206,7 @@ We decide to come up with a couple of different approaches, which can be trained
 
 ![Training System Design](model-training.drawio.png)
 
-## Training the Classifiers
+### Training the Classifiers
 
 `train-random-forest-classifier data/labeled/taxi-rides.parquet random-forest-classifier`
 
@@ -214,17 +214,17 @@ We decide to come up with a couple of different approaches, which can be trained
 
 `train-logistic-regression-classifier data/labeled/taxi-rides.parquet logistic-regression-classifier`
 
-## Detecting Outliers
+### Detecting Outliers
 
 Run `detect-taxi-ride-outliers-with-classifier`.
 
-## CI Pipeline
+### CI Pipeline
 
 The CI pipeline is going to train all 3 models automatically and uses the one with the highest F1 score for outliers. 
 
 ![Model Training CI Pipeline](model-training-ci-pipeline.drawio.png)
 
-## User Story 3: Detect Outliers On the Fly
+### User Story 3: Detect Outliers On the Fly
 
 As a taxi ride company we want highest customer satisfaction. We therefore grant a 50% discount for every taxi ride that is an outlier. 
 
@@ -233,7 +233,7 @@ Acceptance Criteria
 
 Implementation Notes: This user story is implemented by checkpoint 10.
 
-## High Level System Architecture
+### High Level System Architecture
 
 ![High Level System Architecture](api-high-level-system-architecture.drawio.png)
 
@@ -241,15 +241,15 @@ We choose to use MLFlow to register our models (which are the same as before). F
 
 ![High Level System Design](api-system-design.drawio.png)
 
-## Train the Classifiers
+### Train the Classifiers
 
 Same as above. Make sure to run it in the root folder of this project. 
 
-## Inspecting the Trained Models and Selecting the One Used for Production
+### Inspecting the Trained Models and Selecting the One Used for Production
 
 Start the MLFlow server: `mlflow server` and open the URL in your browser.
 
-## Running the API Server and Detect Outliers
+### Running the API Server and Detect Outliers
 
 Start the MLFlow server: `mlflow server`.
 
