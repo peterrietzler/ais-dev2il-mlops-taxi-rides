@@ -224,7 +224,7 @@ The CI pipeline is going to train all 3 models automatically and uses the one wi
 
 ![Model Training CI Pipeline](model-training-ci-pipeline.drawio.png)
 
-### User Story 3: Detect Outliers On the Fly
+## User Story 3: Detect Outliers On the Fly
 
 As a taxi ride company we want highest customer satisfaction. We therefore grant a 50% discount for every taxi ride that is an outlier. 
 
