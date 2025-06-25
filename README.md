@@ -237,7 +237,7 @@ Implementation Notes: This user story is implemented by checkpoint 10.
 
 ![High Level System Architecture](api-high-level-system-architecture.drawio.png)
 
-We choose to use MLFlow to register our models (which are the same as before). For the sake of simplicity of the whole develoment environment setup for this project, the CI pipeline for the outlier detection jobs is not changed. 
+We choose to use MLFlow to register our models (which are the same as before). For the sake of simplicity of the whole development environment setup for this project, the CI pipeline for the outlier detection jobs is not changed. 
 
 ![High Level System Design](api-system-design.drawio.png)
 
