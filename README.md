@@ -210,7 +210,7 @@ We decide to come up with a couple of different approaches, which can be trained
 
 `train-random-forest-classifier data/labeled/taxi-rides.parquet random-forest-classifier`
 
-`train-random-forest-classifier-v2 data/labeled/taxi-rides.parquet random-forest-classifier`
+`train-random-forest-classifier-v2 data/labeled/taxi-rides.parquet random-forest-classifier-v2`
 
 `train-logistic-regression-classifier data/labeled/taxi-rides.parquet logistic-regression-classifier`
 
