@@ -36,7 +36,5 @@ def forecast_sales(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
 
-    # Assume the model returns a boolean or 0/1 for outlier detection
-    outlier = bool(preds[0]) if hasattr(preds, '__getitem__') else bool(preds)
-
+    outlier = bool(preds)
     return OutlierDetectionResponse(outlier=outlier)
