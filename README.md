@@ -200,7 +200,7 @@ Will stay the same, except for the fact that the model training system is going 
 
 ### Training System Design
 
-The labeleled data is provided in the file [.data/labeled/taxi-rides.parquet](./data/labeled/taxi-rides.parquet). 
+The labeleled data is provided in the file [./data/labeled/taxi-rides.parquet](./data/labeled/taxi-rides.parquet). 
 
 We decide to come up with a couple of different approaches, which can be trained independently of each other. The outlier detection job is changed in a way, so that it can transparently use any of the trained models:
 
